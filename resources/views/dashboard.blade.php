@@ -75,7 +75,7 @@
                 <div class="relative p-6 flex items-start justify-between">
                     <div class="flex-1">
                         <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Alat Tersedia</p>
-                        <p class="text-4xl font-bold text-green-600 mt-2">{{ $alatTersedia }}</p>
+                        <p class="text-4xl font-bold text-green-600 mt-2">{{ $totalStokTersedia }}</p>
                         <p class="text-xs text-gray-400 mt-3">Siap untuk dipinjam</p>
                     </div>
                     <div
@@ -117,88 +117,40 @@
         </div>
 
         <!-- Tabel Peminjaman dengan Design Premium -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <!-- Header Tabel -->
-            <div class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 p-6">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                    <span class="w-1 h-6 bg-blue-600 rounded-full"></span>
-                    Peminjaman Terbaru
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">Daftar peminjaman alat terkini</p>
-            </div>
+        @auth
+            @if (in_array(auth()->user()->role, ['admin', 'petugas']))
+                <!-- Tabel Peminjaman dengan Design Premium -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <!-- Header Tabel -->
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 p-6">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <span class="w-1 h-6 bg-blue-600 rounded-full"></span>
+                            Peminjaman Terbaru
+                        </h2>
+                        <p class="text-sm text-gray-500 mt-1">Daftar peminjaman alat terkini</p>
+                    </div>
 
-            <!-- Tabel -->
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-100 border-b border-gray-200">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Nama Alat</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Peminjam</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Tanggal Pinjam</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @forelse ($peminjamanTerbaru as $item)
-                            <tr
-                                class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors duration-200 group">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-2 h-2 bg-blue-500 rounded-full group-hover:scale-150 transition-transform duration-300">
-                                        </div>
-                                        <span class="font-semibold text-gray-800">{{ $item->alat->nama_alat }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-2">
-                                        <div
-                                            class="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                            {{ substr($item->user->name, 0, 1) }}
-                                        </div>
-                                        <span class="text-gray-700">{{ $item->user->name }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="text-gray-600">{{ $item->tanggal_pinjam->format('d M Y') }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if ($item->status == 'dipinjam')
-                                        <span
-                                            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 text-xs font-semibold rounded-full border border-yellow-200 hover:from-yellow-200 hover:to-yellow-100 transition-all duration-200">
-                                            <span class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
-                                            Dipinjam
-                                        </span>
-                                    @elseif ($item->status == 'dikembalikan')
-                                        <span
-                                            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-100 to-green-50 text-green-800 text-xs font-semibold rounded-full border border-green-200 hover:from-green-200 hover:to-green-100 transition-all duration-200">
-                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                                            Dikembalikan
-                                        </span>
-                                    @else
-                                        <span
-                                            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 text-xs font-semibold rounded-full border border-blue-200 hover:from-blue-200 hover:to-blue-100 transition-all duration-200">
-                                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                            Menunggu
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="px-6 py-12 text-center">
-                                    <div class="flex flex-col items-center justify-center gap-3">
-                                        <div class="text-5xl">📭</div>
-                                        <p class="text-gray-500 font-medium">Belum ada data peminjaman</p>
-                                        <p class="text-sm text-gray-400">Mulai buat peminjaman alat baru</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <!-- Tabel -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            ...
+                        </table>
+                    </div>
+                </div>
+            @endif
+        @endauth
 
-    </div>
-@endsection
+
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    text: '{{ session('success') }}',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
+
+    @endsection

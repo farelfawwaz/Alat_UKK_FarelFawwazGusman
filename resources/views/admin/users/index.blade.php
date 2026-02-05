@@ -95,7 +95,7 @@
                                 <div class="flex justify-center gap-2">
                                     <!-- Edit -->
                                     <a href="{{ route('users.edit', $user->id) }}"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 text-white rounded-lg hover:scale-105 transition">
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-500 shadow rounded-lg hover:scale-105 transition">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24">
                                             <g fill="none" stroke="currentColor" stroke-linecap="round"
@@ -112,7 +112,7 @@
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                         @csrf @method('DELETE')
                                         <button onclick="return confirm('Yakin ingin menghapus user ini?')"
-                                            class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:scale-105 transition">
+                                            class="inline-flex items-center gap-2 px-4 py-2 bg-white text-red-500 shadow rounded-lg hover:scale-105 transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24">
                                                 <path fill="currentColor" fill-rule="evenodd"

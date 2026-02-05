@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Peminjaman extends Model
 {
-    protected $table = 'peminjaman';
+    protected $table = 'peminjamen';
 
     protected $fillable = [
-        'alat_id',
         'user_id',
+        'alat_id',
+        'nama_peminjam',
+        'alamat',
+        'no_telp',
         'tanggal_pinjam',
         'tanggal_kembali',
-        'status',
-        'catatan',
+        'status'
     ];
 
     protected $casts = [

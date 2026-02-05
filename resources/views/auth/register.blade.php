@@ -3,99 +3,154 @@
 @section('title', 'Register')
 
 @section('content')
-<div class="flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 md:p-10">
-
-        <!-- Title -->
-        <h1 class="text-3xl font-bold text-center text-gray-800">
-            Buat Akun
-        </h1>
-        <p class="text-center text-gray-500 mt-2 mb-8 text-sm">
-            Silakan isi data untuk membuat akun baru
-        </p>
-
-        <!-- Form -->
-        <form action="{{ route('register') }}" method="POST" class="space-y-5">
-            @csrf
-
-            <!-- Name -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Lengkap
-                </label>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Nama Lengkap"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
-                           focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                    required
-                >
+    <div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <!-- Header Card -->
+            <div class="bg-white rounded-t-3xl text-center py-10 px-8">
+                <div class="mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Buat Akun</h1>
             </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="email@example.com"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
-                           focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                    required
-                >
+            <!-- Form Card -->
+            <div class="bg-white rounded-b-3xl shadow-2xl px-8 py-10">
+                <form action="{{ route('register') }}" method="POST" class="space-y-4">
+                    @csrf
+
+                    <!-- Name Input -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                        <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap"
+                            class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 placeholder-gray-400
+                               focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
+                            required>
+                        @error('name')
+                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email Input -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com"
+                            class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 placeholder-gray-400
+                               focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
+                            required>
+                        @error('email')
+                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Password Input with Toggle -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                        <div class="relative">
+                            <input id="password" type="password" name="password" placeholder="••••••••"
+                                class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 placeholder-gray-400 pr-12
+                                   focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
+                                required>
+                            <button type="button" onclick="togglePassword('password', 'eyeOpenPass', 'eyeClosedPass')"
+                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-blue-600 transition">
+                                <svg id="eyeOpenPass" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg id="eyeClosedPass" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-rule="evenodd"
+                                        d="m18.67 16.973l2.755 2.755l-.849.848L3.85 3.85L4.697 3l2.855 2.855C8.932 5.303 10.432 5 12 5c4.808 0 8.972 2.848 11 7a12.65 12.65 0 0 1-4.33 4.973M8.486 6.79l1.664 1.664a4 4 0 0 1 5.398 5.398l2.255 2.255c1.574-1 2.904-2.403 3.845-4.106C19.686 8.45 16.034 6.2 12 6.2a10.8 10.8 0 0 0-3.514.59m6.152 6.152a2.8 2.8 0 0 0-3.579-3.579zm1.81 5.204c-1.38.552-2.88.855-4.448.855c-4.808 0-8.972-2.848-11-7a12.65 12.65 0 0 1 4.33-4.973l.867.867A11.36 11.36 0 0 0 2.352 12c1.962 3.55 5.614 5.8 9.648 5.8a10.8 10.8 0 0 0 3.514-.59l.934.935zM8.453 10.15l.909.91a2.8 2.8 0 0 0 3.579 3.579l.91.908a4 4 0 0 1-5.398-5.398z" />
+                                </svg>
+                            </button>
+                        </div>
+                        @error('password')
+                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Confirm Password Input with Toggle -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password</label>
+                        <div class="relative">
+                            <input id="password_confirmation" type="password" name="password_confirmation"
+                                placeholder="••••••••"
+                                class="w-full px-4 py-3 text-sm rounded-xl border border-gray-300 placeholder-gray-400 pr-12
+                                   focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition"
+                                required>
+                            <button type="button"
+                                onclick="togglePassword('password_confirmation', 'eyeOpenConf', 'eyeClosedConf')"
+                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-blue-600 transition">
+                                <svg id="eyeOpenConf" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg id="eyeClosedConf" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-rule="evenodd"
+                                        d="m18.67 16.973l2.755 2.755l-.849.848L3.85 3.85L4.697 3l2.855 2.855C8.932 5.303 10.432 5 12 5c4.808 0 8.972 2.848 11 7a12.65 12.65 0 0 1-4.33 4.973M8.486 6.79l1.664 1.664a4 4 0 0 1 5.398 5.398l2.255 2.255c1.574-1 2.904-2.403 3.845-4.106C19.686 8.45 16.034 6.2 12 6.2a10.8 10.8 0 0 0-3.514.59m6.152 6.152a2.8 2.8 0 0 0-3.579-3.579zm1.81 5.204c-1.38.552-2.88.855-4.448.855c-4.808 0-8.972-2.848-11-7a12.65 12.65 0 0 1 4.33-4.973l.867.867A11.36 11.36 0 0 0 2.352 12c1.962 3.55 5.614 5.8 9.648 5.8a10.8 10.8 0 0 0 3.514-.59l.934.935zM8.453 10.15l.909.91a2.8 2.8 0 0 0 3.579 3.579l.91.908a4 4 0 0 1-5.398-5.398z" />
+                                </svg>
+                            </button>
+                        </div>
+                        @error('password_confirmation')
+                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl text-white font-semibold mt-6
+                           bg-gradient-to-r from-blue-600 to-blue-700
+                           hover:shadow-lg hover:from-blue-700 hover:to-blue-800
+                           transition duration-200">
+                        Daftar
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-4 my-6">
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                    <span class="text-xs text-gray-500 font-medium">ATAU</span>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                </div>
+
+                <!-- Login Link -->
+                <p class="text-sm text-center text-gray-600">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}" class="text-blue-600 font-semibold hover:text-blue-700 transition">
+                        Login
+                    </a>
+                </p>
             </div>
 
-            <!-- Password -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                </label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="••••••••"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
-                           focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                    required
-                >
-            </div>
-
-            <!-- Confirm Password -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Konfirmasi Password
-                </label>
-                <input
-                    type="password"
-                    name="password_confirmation"
-                    placeholder="••••••••"
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
-                           focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                    required
-                >
-            </div>
-
-            <!-- Button -->
-            <button
-                type="submit"
-                class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg
-                       hover:bg-blue-700 transition duration-200"
-            >
-                Daftar
-            </button>
-        </form>
-
-        <!-- Login -->
-        <p class="text-sm text-center text-gray-500 mt-6">
-            Sudah punya akun?
-            <a href="{{ route('login') }}" class="text-blue-600 hover:underline font-medium">
-                Login
-            </a>
-        </p>
-
+            <!-- Footer -->
+            <p class="text-xs text-center text-white mt-6 opacity-80">
+                © 2024 Sistem Peminjaman Alat. All rights reserved.
+            </p>
+        </div>
     </div>
-</div>
+
+    <script>
+        function togglePassword(fieldId, eyeOpenId, eyeClosedId) {
+            const field = document.getElementById(fieldId);
+            const eyeOpen = document.getElementById(eyeOpenId);
+            const eyeClosed = document.getElementById(eyeClosedId);
+
+            if (field.type === 'password') {
+                field.type = 'text';
+                eyeOpen.classList.remove('hidden');
+                eyeClosed.classList.add('hidden');
+            } else {
+                field.type = 'password';
+                eyeOpen.classList.add('hidden');
+                eyeClosed.classList.remove('hidden');
+            }
+        }
+    </script>
 @endsection

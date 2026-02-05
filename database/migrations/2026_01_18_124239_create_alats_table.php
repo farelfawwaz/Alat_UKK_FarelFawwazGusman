@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nama_alat');
             $table->string('kode_alat')->unique();
-            $table->string('kategori');
+
+            $table->foreignId('kategori_id')
+                  ->constrained('kategori')
+                  ->cascadeOnDelete();
+
             $table->integer('stok');
             $table->enum('status', ['tersedia', 'dipinjam'])->default('tersedia');
             $table->text('deskripsi')->nullable();

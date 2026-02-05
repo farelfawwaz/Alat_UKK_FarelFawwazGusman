@@ -6,7 +6,7 @@
 
     <!-- Back Link -->
     <div class="mb-6">
-        <a href="{{ route('alat.index') }}"
+        <a href="{{ route('admin.alat.index') }}"
             class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
             Kembali ke Daftar Alat
         </a>
@@ -23,7 +23,7 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('alat.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.alat.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 <!-- Nama Alat -->
@@ -55,12 +55,41 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Kategori <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="kategori" value="{{ old('kategori') }}"
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
-                        placeholder="Masukkan kategori alat" required>
+
+                    <div class="relative">
+                        <select name="kategori_id"
+                            class="w-full px-4 py-3 pr-10 border-2 border-gray-300 rounded-lg
+               bg-white text-gray-700
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-200
+               outline-none transition-all duration-200 font-medium
+               appearance-none"
+                            required>
+
+                            <option value="" disabled selected class="text-gray-400">
+                                -- Pilih Kategori --
+                            </option>
+
+                            @foreach ($kategori as $item)
+                                <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <!-- Custom Arrow -->
+                        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+
+
+                    @error('kategori_id')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+
 
                 <!-- Stok -->
                 <div>
@@ -86,12 +115,40 @@
                         placeholder="Deskripsi singkat alat">{{ old('deskripsi') }}</textarea>
                 </div>
 
+                <!-- Image Alat -->
+                <!-- Gambar Alat -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2">
+                        Gambar Alat
+                    </label>
+
+                    <!-- Preview -->
+                    <div class="mb-3">
+                        <img id="preview-image" src="https://via.placeholder.com/300x200?text=Preview+Image"
+                            class="w-full max-w-sm h-48 object-cover rounded-lg border border-gray-300">
+                    </div>
+
+                    <!-- Input File -->
+                    <input type="file" name="image" accept="image/*" onchange="previewImage(event)"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium bg-white">
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Format: JPG, PNG, JPEG • Maks 2MB
+                    </p>
+
+                    @error('image')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Divider -->
                 <div class="border-t-2 border-gray-200 pt-6"></div>
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('alat.index') }}"
+                    <a href="{{ route('admin.alat.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>
@@ -116,28 +173,15 @@
         </div>
     </div>
 
+    @push('scripts')
+        <script>
+            function previewImage(event) {
+                const image = document.getElementById('preview-image');
+                image.src = URL.createObjectURL(event.target.files[0]);
+                image.onload = () => URL.revokeObjectURL(image.src);
+            }
+        </script>
+    @endpush
+
+
 @endsection
-
-
-
-{{-- Nama Alat	Kode Alat	Stok	Deskripsi
-Bor Listrik	BOR-001	     5	       Bor listrik untuk kayu dan besi
-Bor Beton	BOR-002	     3	       Bor beton untuk pekerjaan konstruksi
-Bor Tangan	BOR-003	     4	       Bor manual untuk pekerjaan ringan
-
-⚙️ Kategori: Gerinda
-Nama Alat	   Kode Alat	Stok	        Deskripsi
-Gerinda Tangan	GRN-001	     6	       Gerinda untuk memotong besi
-Gerinda Duduk	GRN-002	     2	       Gerinda duduk untuk bengkel
-
-🔨 Kategori: Alat Tangan
-Nama Alat	Kode Alat	Stok	Deskripsi
-Palu Besi	    PL-001	 10	    Palu besi untuk konstruksi
-Kunci Inggris	KI-001	 8	    Kunci inggris serbaguna
-Obeng Set	    OB-001	 12	    et obeng plus dan minus
-
-🏗️ Kategori: Alat Proyek
-Nama Alat	  KodeAlat	     Stok	           Deskripsi
-Mesin Molen	   MOL-001	       2	        Mesin pengaduk semen
-Jack Hammer	   JH-001	       1	        Alat pemecah beton
-Compressor	   CMP-001	       2	        Mesin kompresor udara --}}

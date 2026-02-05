@@ -6,7 +6,7 @@
 
     <!-- Back Link -->
     <div class="mb-6">
-        <a href="{{ route('alat.index') }}"
+        <a href="{{ route('admin.alat.index') }}"
             class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
             Kembali ke Daftar Alat
         </a>
@@ -23,7 +23,9 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('alat.update', $alat->id) }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.alat.update', $alat->id) }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
+
                 @csrf
                 @method('PUT')
 
@@ -39,16 +41,50 @@
                         placeholder="Masukkan nama alat" required>
                 </div>
 
+                <!-- Foto Alat -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2">
+                        Foto Alat
+                    </label>
+
+                    <!-- Preview -->
+                    <div class="mb-3">
+                        <img id="preview-foto"
+                            src="{{ $alat->image ? asset('storage/' . $alat->image) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
+                            class="w-full max-w-sm h-48 object-cover rounded-lg border">
+                    </div>
+
+                    <input type="file" name="image" accept="image/*" onchange="previewImage(event)"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium bg-white">
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Kosongkan jika tidak ingin mengganti foto
+                    </p>
+                </div>
+
+
                 <!-- Kategori -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Kategori <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="kategori" value="{{ old('kategori', $alat->kategori) }}"
+
+                    <select name="kategori_id" required
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
-                        placeholder="Masukkan kategori alat" required>
+    focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+    transition-all duration-200 font-medium">
+
+                        <option value="">-- Pilih Kategori --</option>
+
+                        @foreach ($kategori as $item)
+                            <option value="{{ $item->id }}"
+                                {{ old('kategori_id', $alat->kategori_id ?? '') == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <!-- Stok -->
@@ -86,8 +122,7 @@
                         <!-- Arrow -->
                         <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-500">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </div>
@@ -110,7 +145,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('alat.index') }}"
+                    <a href="{{ route('admin.alat.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>
@@ -134,5 +169,16 @@
             </p>
         </div>
     </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('preview-foto');
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 @endsection
