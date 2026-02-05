@@ -31,46 +31,48 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        // USER
         Route::resource('users', UserController::class);
-
-        // ALAT
         Route::resource('alat', AlatController::class);
-
-        // KATEGORI
         Route::resource('kategori', KategoriController::class);
 
-        // PEMINJAMAN
-        Route::resource('peminjaman', PeminjamanController::class);
+        // lihat semua peminjaman
+        Route::get('peminjaman', [PeminjamanController::class, 'index'])
+            ->name('peminjaman.index');
 
-        // PENGEMBALIAN
+        // pengembalian
+        Route::patch(
+            'peminjaman/{peminjaman}/kembalikan',
+            [PeminjamanController::class, 'kembalikan']
+        )
+            ->name('peminjaman.kembalikan');
+
         Route::get('pengembalian', [PeminjamanController::class, 'pengembalian'])
             ->name('pengembalian.index');
 
-        Route::post('pengembalian/{peminjaman}', [PeminjamanController::class, 'kembalikan'])
-            ->name('pengembalian.kembalikan');
-
-        // ACTIVITY LOG
         Route::get('aktivity-log', [ActivitylogController::class, 'index'])
             ->name('aktivity.index');
     });
 
+Route::middleware(['auth', 'petugas'])
+    ->prefix('petugas')
+    ->name('petugas.')
+    ->group(function () {
 
-Route::middleware(['auth', 'petugas'])->group(function () {
+        Route::get('peminjaman', [PetugasPeminjamanController::class, 'index'])
+            ->name('peminjaman.index');
 
-    Route::get('/petugas/peminjaman', [PetugasPeminjamanController::class, 'index'])
-        ->name('petugas.peminjaman.index');
+        Route::get('peminjaman/{peminjaman}', [PetugasPeminjamanController::class, 'show'])
+            ->name('peminjaman.show');
 
-    Route::get('/petugas/peminjaman/{id}', [PetugasPeminjamanController::class, 'show'])
-        ->name('petugas.peminjaman.show');
+        Route::patch(
+            'peminjaman/{peminjaman}/approve',
+            [PetugasPeminjamanController::class, 'approve']
+        )
+            ->name('peminjaman.approve');
 
-    Route::put('/petugas/peminjaman/{id}/approve', [PetugasPeminjamanController::class, 'approve'])
-        ->name('petugas.peminjaman.approve');
-
-    Route::put('/petugas/peminjaman/{id}/reject', [PetugasPeminjamanController::class, 'reject'])
-        ->name('petugas.peminjaman.reject');
-
-});
+        Route::patch('peminjaman/{peminjaman}/reject', [PetugasPeminjamanController::class, 'reject'])
+            ->name('peminjaman.reject');
+    });
 
 Route::middleware(['auth', 'user'])
     ->prefix('user')
@@ -80,9 +82,22 @@ Route::middleware(['auth', 'user'])
         Route::get('alat', [AlatController::class, 'userIndex'])
             ->name('alat.index');
 
+        Route::get('peminjaman', [PeminjamanController::class, 'userIndex'])
+            ->name('peminjaman.index');
+
         Route::get('peminjaman/create/{alat}', [PeminjamanController::class, 'create'])
             ->name('peminjaman.create');
-});
+
+        Route::post('peminjaman', [PeminjamanController::class, 'store'])
+            ->name('peminjaman.store');
+
+        Route::get('pengembalian', [PeminjamanController::class, 'userPengembalian'])
+            ->name('pengembalian.index');
+
+        Route::post('pengembalian/{peminjaman}', [PeminjamanController::class, 'kembalikan'])
+            ->name('pengembalian.store');
+    });
+
 
 
 

@@ -108,7 +108,7 @@
                 <span>Persetujuan Peminjaman</span>
             </a>
 
-            <a href="{{ route('pengembalian.index') }}" class="{{ $menu }}">
+            <a href="#" class="{{ $menu }}">
                 <span>Monitoring Pengembalian</span>
             </a>
 
@@ -125,11 +125,11 @@
                 <span>Daftar Alat</span>
             </a>
 
-            <a href="#" class="{{ $menu }}">
+            <a href="{{ route('user.peminjaman.index') }}" class="{{ $menu }}">
                 <span>Ajukan Peminjaman</span>
             </a>
 
-            <a href="#" class="{{ $menu }}">
+            <a href="{{ route('user.pengembalian.index') }}" class="{{ $menu }}">
                 <span>Pengembalian</span>
             </a>
 
