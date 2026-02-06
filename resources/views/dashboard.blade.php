@@ -130,12 +130,57 @@
                         <p class="text-sm text-gray-500 mt-1">Daftar peminjaman alat terkini</p>
                     </div>
 
-                    <!-- Tabel -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            ...
-                        </table>
-                    </div>
+                    <table class="w-full text-sm">
+                        <thead class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Peminjam</th>
+                                <th class="px-6 py-3 text-left">Alat</th>
+                                <th class="px-6 py-3 text-center">Jumlah</th>
+                                <th class="px-6 py-3 text-center">Status</th>
+                                <th class="px-6 py-3 text-center">Tanggal Pinjam</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y">
+                            @forelse ($peminjamanTerbaru as $item)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        {{ $item->nama_peminjam?? '-' }}
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        {{ $item->alat->nama_alat ?? '-' }}
+                                    </td>
+
+                                    <td class="px-6 py-4 text-center">
+                                        {{ $item->jumlah }}
+                                    </td>
+
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-semibold
+                        @if ($item->status == 'menunggu') bg-yellow-100 text-yellow-700
+                        @elseif ($item->status == 'dipinjam')
+                            bg-blue-100 text-blue-700
+                        @else
+                            bg-green-100 text-green-700 @endif">
+                                            {{ ucfirst($item->status) }}
+                                        </span>
+                                    </td>
+
+                                    <td class="px-6 py-4 text-center">
+                                        {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-6 text-center text-gray-400">
+                                        Belum ada data peminjaman
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             @endif
         @endauth

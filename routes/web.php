@@ -12,6 +12,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PetugasMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Controllers\PetugasPeminjamanController;
+use App\Http\Controllers\LaporanController;
 
 
 Route::get('/', function () {
@@ -58,21 +59,30 @@ Route::middleware(['auth', 'petugas'])
     ->name('petugas.')
     ->group(function () {
 
-        Route::get('peminjaman', [PetugasPeminjamanController::class, 'index'])
+        // halaman persetujuan
+        Route::get('/peminjaman', [PeminjamanController::class, 'persetujuan'])
             ->name('peminjaman.index');
 
-        Route::get('peminjaman/{peminjaman}', [PetugasPeminjamanController::class, 'show'])
+        // tombol setujui
+        Route::post('/peminjaman/{peminjaman}/setujui', [PeminjamanController::class, 'setujui'])
+            ->name('peminjaman.setujui');
+
+        // tombol tolak
+        Route::post('/peminjaman/{peminjaman}/tolak', [PeminjamanController::class, 'tolak'])
+            ->name('peminjaman.tolak');
+
+        // detail
+        Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])
             ->name('peminjaman.show');
 
-        Route::patch(
-            'peminjaman/{peminjaman}/approve',
-            [PetugasPeminjamanController::class, 'approve']
-        )
-            ->name('peminjaman.approve');
+        Route::get('pengembalian', [PeminjamanController::class, 'monitoringPengembalian'])
+            ->name('pengembalian.index');
 
-        Route::patch('peminjaman/{peminjaman}/reject', [PetugasPeminjamanController::class, 'reject'])
-            ->name('peminjaman.reject');
+        //Laporan
+        Route::get('/laporan/peminjaman', [LaporanController::class, 'peminjaman'])
+            ->name('laporan.index');
     });
+
 
 Route::middleware(['auth', 'user'])
     ->prefix('user')

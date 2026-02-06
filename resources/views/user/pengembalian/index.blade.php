@@ -37,7 +37,7 @@
                         </td>
 
                         <td class="px-6 py-4 text-center">
-                            @if ($item->status === 'dipinjam')
+                            @if ($item->status === 'disetujui')
                                 <form action="{{ route('user.pengembalian.store', $item->id) }}" method="POST">
                                     @csrf
                                     <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">

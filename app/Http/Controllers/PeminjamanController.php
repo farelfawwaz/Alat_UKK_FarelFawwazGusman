@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
-    // ===================== ADMIN INDEX =====================
+    // ===================== ADMIN =====================
     public function index(Request $request)
     {
         $query = Peminjaman::with(['alat', 'user']);
@@ -24,7 +24,7 @@ class PeminjamanController extends Controller
         return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
-    // ===================== USER CREATE =====================
+    // ===================== USER =====================
     public function create(Alat $alat)
     {
         if ($alat->stok < 1) {
@@ -35,7 +35,6 @@ class PeminjamanController extends Controller
         return view('user.peminjaman.create', compact('alat'));
     }
 
-    // ===================== USER STORE (MENUNGGU) =====================
     public function store(Request $request)
     {
         $request->validate([
@@ -45,12 +44,9 @@ class PeminjamanController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-
             $alat = Alat::lockForUpdate()->findOrFail($request->alat_id);
 
-            if ($alat->stok < 1) {
-                abort(400, 'Stok alat habis');
-            }
+            if ($alat->stok < 1) abort(400, 'Stok alat habis');
 
             Peminjaman::create([
                 'user_id'         => Auth::id(),
@@ -67,7 +63,7 @@ class PeminjamanController extends Controller
                 'user_id'   => Auth::id(),
                 'aksi'      => 'ajukan',
                 'modul'     => 'peminjaman',
-                'deskripsi' => 'Mengajukan peminjaman alat: ' . $alat->nama_alat,
+                'deskripsi' => 'Mengajukan peminjaman alat: ' . $alat->nama,
             ]);
         });
 
@@ -75,49 +71,123 @@ class PeminjamanController extends Controller
             ->with('success', 'Pengajuan berhasil, menunggu persetujuan petugas');
     }
 
-    // ===================== PETUGAS SETUJUI =====================
+    public function userIndex()
+    {
+        $peminjamans = Peminjaman::with('alat')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('user.peminjaman.index', compact('peminjamans'));
+    }
+
+    public function userPengembalian()
+    {
+        $peminjamans = Peminjaman::with('alat')
+            ->where('user_id', Auth::id())
+            ->where('status', 'disetujui')
+            ->latest()
+            ->paginate(10);
+
+        return view('user.pengembalian.index', compact('peminjamans'));
+    }
+
+    // ===================== PETUGAS =====================
+    public function indexPetugas()
+    {
+        $peminjaman = Peminjaman::with(['alat', 'user'])
+            ->where('status', 'menunggu')
+            ->latest()
+            ->get();
+
+        return view('petugas.peminjaman.index', compact('peminjaman'));
+    }
+
+    public function show(Peminjaman $peminjaman)
+    {
+        return view('petugas.peminjaman.show', compact('peminjaman'));
+    }
+
+    public function persetujuan()
+    {
+        $peminjaman = Peminjaman::with(['user', 'alat'])
+            ->where('status', 'menunggu')
+            ->get();
+
+        return view('petugas.peminjaman.index', compact('peminjaman'));
+    }
+
     public function setujui(Peminjaman $peminjaman)
     {
         DB::transaction(function () use ($peminjaman) {
-
-            if ($peminjaman->status !== 'menunggu') {
-                abort(400, 'Peminjaman sudah diproses');
-            }
+            if ($peminjaman->status !== 'menunggu') abort(400, 'Peminjaman sudah diproses');
 
             $alat = Alat::lockForUpdate()->findOrFail($peminjaman->alat_id);
 
-            if ($alat->stok < 1) {
-                abort(400, 'Stok alat habis');
-            }
+            if ($alat->stok < 1) abort(400, 'Stok alat habis');
 
             $alat->decrement('stok');
 
-            $peminjaman->update([
-                'status' => 'dipinjam',
-            ]);
+            $peminjaman->update(['status' => 'disetujui']);
 
             Activitylog::create([
                 'user_id'   => Auth::id(),
                 'aksi'      => 'setujui',
                 'modul'     => 'peminjaman',
-                'deskripsi' => 'Menyetujui peminjaman alat: ' . $alat->nama_alat,
+                'deskripsi' => 'Menyetujui peminjaman alat: ' . $alat->nama,
             ]);
         });
 
         return back()->with('success', 'Peminjaman berhasil disetujui');
     }
 
-    // ===================== PENGEMBALIAN =====================
-    public function kembalikan(Peminjaman $peminjaman)
+    public function tolak(Peminjaman $peminjaman)
     {
-        // JIKA USER → CEK PEMILIK
-        if (Auth::user()->role === 'user') {
-            if ($peminjaman->user_id !== Auth::id()) {
-                abort(403);
-            }
+        if ($peminjaman->status !== 'menunggu') abort(400, 'Peminjaman sudah diproses');
+
+        $peminjaman->update(['status' => 'ditolak']);
+
+        Activitylog::create([
+            'user_id'   => Auth::id(),
+            'aksi'      => 'tolak',
+            'modul'     => 'peminjaman',
+            'deskripsi' => 'Menolak peminjaman alat: ' . $peminjaman->alat->nama,
+        ]);
+
+        return back()->with('success', 'Peminjaman berhasil ditolak');
+    }
+
+    // ===================== PETUGAS MONITORING PENGEMBALIAN =====================
+    public function monitoringPengembalian(Request $request)
+    {
+        $query = Peminjaman::with(['user', 'alat'])
+            ->where('status', 'dikembalikan');
+
+        if ($request->from && $request->to) {
+            $query->whereBetween('tanggal_kembali', [
+                $request->from,
+                $request->to
+            ]);
         }
 
-        if ($peminjaman->status !== 'dipinjam') {
+        $peminjamans = $query
+            ->latest('tanggal_kembali')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('petugas.pengembalian.index', compact('peminjamans'));
+    }
+
+
+
+    // ===================== PENGEMBALIAN (USER & PETUGAS) =====================
+    public function kembalikan(Peminjaman $peminjaman)
+    {
+        if (Auth::user()->role === 'user' && $peminjaman->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($peminjaman->status !== 'disetujui') {
             return back()->with('error', 'Peminjaman tidak aktif');
         }
 
@@ -134,35 +204,12 @@ class PeminjamanController extends Controller
                 'user_id'   => Auth::id(),
                 'aksi'      => 'kembalikan',
                 'modul'     => 'peminjaman',
-                'deskripsi' => 'Mengembalikan alat: ' . $peminjaman->alat->nama_alat,
+                'deskripsi' => 'Mengembalikan alat: ' . $peminjaman->alat->nama,
             ]);
         });
 
-        return back()->with('success', 'Alat berhasil dikembalikan');
-    }
-
-
-
-    // ===================== USER INDEX =====================
-    public function userIndex()
-    {
-        $peminjamans = Peminjaman::with('alat')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->paginate(10);
-
-        return view('user.peminjaman.index', compact('peminjamans'));
-    }
-
-    // ===================== USER PENGEMBALIAN =====================
-    public function userPengembalian()
-    {
-        $peminjamans = Peminjaman::with('alat')
-            ->where('user_id', Auth::id())
-            ->where('status', 'dipinjam') // HANYA YANG AKTIF
-            ->latest()
-            ->paginate(10);
-
-        return view('user.pengembalian.index', compact('peminjamans'));
+        return redirect()
+            ->route('user.pengembalian.index')
+            ->with('success', 'Alat berhasil dikembalikan');
     }
 }

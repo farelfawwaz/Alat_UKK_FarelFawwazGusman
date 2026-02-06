@@ -7,7 +7,6 @@
     {{-- HEADER --}}
     <div class="mb-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">
                     Persetujuan Peminjaman
@@ -16,7 +15,6 @@
                     Daftar pengajuan peminjaman yang menunggu persetujuan petugas
                 </p>
             </div>
-
         </div>
     </div>
 
@@ -37,58 +35,18 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse ($peminjaman as $item)
                         <tr class="hover:bg-indigo-50 transition">
-                            <td class="px-6 py-4">
-                                {{ $loop->iteration }}
-                            </td>
-
-                            <td class="px-6 py-4 font-semibold">
-                                {{ $item->user->name }}
-                            </td>
-
+                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4 font-semibold">{{ $item->user->name }}</td>
+                            <td class="px-6 py-4 text-center">{{ $item->alat->nama }}</td>
+                            <td class="px-6 py-4 text-center">{{ $item->created_at->format('d M Y') }}</td>
                             <td class="px-6 py-4 text-center">
-                                {{ $item->alat->nama }}
-                            </td>
-
-                            <td class="px-6 py-4 text-center">
-                                {{ $item->created_at->format('d M Y') }}
-                            </td>
-
-                            <td class="px-6 py-4">
-                                <div class="flex flex-wrap justify-center items-center gap-2">
-
-                                    {{-- DETAIL --}}
-                                    <a href="{{ route('petugas.peminjaman.show', $item->id) }}"
-                                        class="inline-flex items-center gap-2 px-3 py-2 text-sm
-                                        bg-indigo-50 text-indigo-600 rounded-lg
-                                        hover:bg-indigo-100 transition shadow-sm">
-                                        Detail
-                                    </a>
-
-                                    {{-- SETUJUI --}}
-                                    <form action="{{ route('petugas.peminjaman.approve', $item->id) }}"
-                                          method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="inline-flex items-center gap-2 px-3 py-2 text-sm
-                                            bg-green-50 text-green-600 rounded-lg
-                                            hover:bg-green-100 transition shadow-sm">
-                                            Setujui
-                                        </button>
-                                    </form>
-
-                                    {{-- TOLAK --}}
-                                    <form action="{{ route('petugas.peminjaman.reject', $item->id) }}"
-                                          method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="inline-flex items-center gap-2 px-3 py-2 text-sm
-                                            bg-red-50 text-red-600 rounded-lg
-                                            hover:bg-red-100 transition shadow-sm">
-                                            Tolak
-                                        </button>
-                                    </form>
-
-                                </div>
+                                {{-- DETAIL --}}
+                                <a href="{{ route('petugas.peminjaman.show', $item->id) }}"
+                                    class="inline-flex items-center gap-2 px-3 py-2 text-sm
+                                          bg-indigo-50 text-indigo-600 rounded-lg
+                                          hover:bg-indigo-100 transition shadow-sm">
+                                    Detail
+                                </a>
                             </td>
                         </tr>
                     @empty
@@ -99,7 +57,6 @@
                         </tr>
                     @endforelse
                 </tbody>
-
             </table>
         </div>
     </div>
