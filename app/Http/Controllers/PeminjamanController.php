@@ -49,15 +49,17 @@ class PeminjamanController extends Controller
             if ($alat->stok < 1) abort(400, 'Stok alat habis');
 
             Peminjaman::create([
-                'user_id'         => Auth::id(),
-                'alat_id'         => $alat->id,
-                'nama_peminjam'   => $request->nama_peminjam,
-                'no_telp'         => $request->no_telp,
-                'alamat'          => $request->alamat,
-                'tanggal_pinjam'  => $request->tanggal_pinjam,
-                'tanggal_kembali' => null,
-                'status'          => 'menunggu',
+                'user_id' => auth::id(),
+                'alat_id' => $alat->id,
+                'nama_peminjam' => $request->nama_peminjam,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'tanggal_pinjam' => $request->tanggal_pinjam,
+                'tanggal_kembali' => $request->tanggal_kembali,
+                'jumlah' => $request->jumlah,
+                'status' => 'menunggu',
             ]);
+
 
             Activitylog::create([
                 'user_id'   => Auth::id(),
@@ -117,45 +119,54 @@ class PeminjamanController extends Controller
         return view('petugas.peminjaman.index', compact('peminjaman'));
     }
 
-    public function setujui(Peminjaman $peminjaman)
+    public function setujui($id)
     {
-        DB::transaction(function () use ($peminjaman) {
-            if ($peminjaman->status !== 'menunggu') abort(400, 'Peminjaman sudah diproses');
+        $peminjaman = Peminjaman::findOrFail($id);
+        $alat = Alat::findOrFail($peminjaman->alat_id);
 
-            $alat = Alat::lockForUpdate()->findOrFail($peminjaman->alat_id);
+        // 🔒 Jangan proses kalau sudah diproses
+        if ($peminjaman->status !== 'menunggu') {
+            return back()->with('error', 'Peminjaman sudah diproses.');
+        }
 
-            if ($alat->stok < 1) abort(400, 'Stok alat habis');
+        // ❗ Cek stok cukup atau tidak
+        if ($peminjaman->jumlah > $alat->stok) {
+            return back()->with('error', 'Stok tidak mencukupi.');
+        }
 
-            $alat->decrement('stok');
+        // ✅ Kurangi stok sesuai jumlah
+        $alat->stok -= $peminjaman->jumlah;
+        $alat->save();
 
-            $peminjaman->update(['status' => 'disetujui']);
+        // ✅ Update status
+        $peminjaman->status = 'disetujui';
+        $peminjaman->save();
 
-            Activitylog::create([
-                'user_id'   => Auth::id(),
-                'aksi'      => 'setujui',
-                'modul'     => 'peminjaman',
-                'deskripsi' => 'Menyetujui peminjaman alat: ' . $alat->nama,
-            ]);
-        });
-
-        return back()->with('success', 'Peminjaman berhasil disetujui');
+        return back()->with('success', 'Peminjaman disetujui.');
     }
 
-    public function tolak(Peminjaman $peminjaman)
+
+    public function tolak(Request $request, $id)
     {
-        if ($peminjaman->status !== 'menunggu') abort(400, 'Peminjaman sudah diproses');
-
-        $peminjaman->update(['status' => 'ditolak']);
-
-        Activitylog::create([
-            'user_id'   => Auth::id(),
-            'aksi'      => 'tolak',
-            'modul'     => 'peminjaman',
-            'deskripsi' => 'Menolak peminjaman alat: ' . $peminjaman->alat->nama,
+        $request->validate([
+            'alasan_penolakan' => 'required|string|max:500'
         ]);
 
-        return back()->with('success', 'Peminjaman berhasil ditolak');
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        // 🔒 Jangan proses kalau sudah diproses
+        if ($peminjaman->status !== 'menunggu') {
+            return back()->with('error', 'Peminjaman sudah diproses.');
+        }
+
+        $peminjaman->update([
+            'status' => 'ditolak',
+            'alasan_penolakan' => $request->alasan_penolakan
+        ]);
+
+        return back()->with('success', 'Peminjaman ditolak.');
     }
+
 
     // ===================== PETUGAS MONITORING PENGEMBALIAN =====================
     public function monitoringPengembalian(Request $request)
@@ -181,35 +192,22 @@ class PeminjamanController extends Controller
 
 
     // ===================== PENGEMBALIAN (USER & PETUGAS) =====================
-    public function kembalikan(Peminjaman $peminjaman)
+    public function kembalikan($id)
     {
-        if (Auth::user()->role === 'user' && $peminjaman->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $peminjaman = Peminjaman::findOrFail($id);
+        $alat = Alat::findOrFail($peminjaman->alat_id);
 
         if ($peminjaman->status !== 'disetujui') {
-            return back()->with('error', 'Peminjaman tidak aktif');
+            return back()->with('error', 'Status tidak valid.');
         }
 
-        DB::transaction(function () use ($peminjaman) {
+        // ✅ Tambahkan kembali stok
+        $alat->stok += $peminjaman->jumlah;
+        $alat->save();
 
-            $peminjaman->alat->increment('stok');
+        $peminjaman->status = 'dikembalikan';
+        $peminjaman->save();
 
-            $peminjaman->update([
-                'status' => 'dikembalikan',
-                'tanggal_kembali' => now(),
-            ]);
-
-            Activitylog::create([
-                'user_id'   => Auth::id(),
-                'aksi'      => 'kembalikan',
-                'modul'     => 'peminjaman',
-                'deskripsi' => 'Mengembalikan alat: ' . $peminjaman->alat->nama,
-            ]);
-        });
-
-        return redirect()
-            ->route('user.pengembalian.index')
-            ->with('success', 'Alat berhasil dikembalikan');
+        return back()->with('success', 'Alat berhasil dikembalikan.');
     }
 }

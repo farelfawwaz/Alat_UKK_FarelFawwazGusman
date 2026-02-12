@@ -38,9 +38,11 @@
 
                         <td class="px-6 py-4 text-center">
                             @if ($item->status === 'disetujui')
-                                <form action="{{ route('user.pengembalian.store', $item->id) }}" method="POST">
+                                <form action="{{ route('user.pengembalian.store', $item->id) }}" method="POST"
+                                    class="form-kembalikan">
                                     @csrf
-                                    <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
                                         Kembalikan
                                     </button>
                                 </form>
@@ -49,6 +51,7 @@
                                     Tidak tersedia
                                 </button>
                             @endif
+
                         </td>
 
                     </tr>
@@ -66,5 +69,29 @@
     <div class="mt-6">
         {{ $peminjamans->links() }}
     </div>
+
+    <script>
+        document.querySelectorAll('.form-kembalikan').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Kembalikan Alat?',
+                    text: "Pastikan alat sudah dikembalikan dalam kondisi baik.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, Kembalikan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
 
 @endsection

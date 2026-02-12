@@ -2,42 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Alat;
+use App\Models\User;
 use App\Models\Peminjaman;
 
-class Dashboardcontroller extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {
-        // jumlah jenis alat
-        $totalAlat = Alat::count();
+        $user = Auth::user();
 
-        // total stok yang tersedia
-        $totalStokTersedia = Alat::sum('stok');
+        // ===================== ADMIN =====================
+        if ($user->role === 'admin') {
 
-        // jumlah alat yang sedang dipinjam (AKURAT)
-        $alatDipinjam = Peminjaman::where('status', 'dipinjam')->count();
+            $totalAlat = Alat::count();
 
-        // jumlah jenis alat yang masih punya stok
-        $alatTersedia = Alat::where('stok', '>', 0)->count();
+            $totalPeminjam = User::where('role', 'user')->count();
 
-        // pengajuan menunggu
-        $pengajuanBaru = Peminjaman::where('status', 'menunggu')->count();
+            $alatDipinjam = Peminjaman::where('status', 'disetujui')->count();
 
-        // peminjaman terbaru
-        $peminjamanTerbaru = Peminjaman::with(['alat', 'user'])
+            $pengajuanBaru = Peminjaman::where('status', 'menunggu')->count();
+
+            $peminjamanTerbaru = Peminjaman::with('alat')
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $alatTerbatas = Alat::where('stok', '<=', 2)
+                ->orderBy('stok')
+                ->get();
+
+            return view('dashboard', compact(
+                'totalAlat',
+                'totalPeminjam',
+                'alatDipinjam',
+                'pengajuanBaru',
+                'peminjamanTerbaru',
+                'alatTerbatas'
+            ));
+        }
+
+        // ===================== PETUGAS =====================
+        if ($user->role === 'petugas') {
+
+            $totalStokTersedia = Alat::sum('stok');
+
+            $alatDipinjam = Peminjaman::where('status', 'disetujui')->count();
+
+            $pengajuanBaru = Peminjaman::where('status', 'menunggu')->count();
+
+            $peminjamanTerbaru = Peminjaman::with('alat')
+                ->latest()
+                ->take(10)
+                ->get();
+
+            return view('dashboard', compact(
+                'totalStokTersedia',
+                'alatDipinjam',
+                'pengajuanBaru',
+                'peminjamanTerbaru'
+            ));
+        }
+
+        // ===================== USER =====================
+        $userAlatDipinjam = Peminjaman::where('user_id', $user->id)
+            ->where('status', 'disetujui')
+            ->count();
+
+        $userTotalPeminjaman = Peminjaman::where('user_id', $user->id)
+            ->count();
+
+        $userPengajuanMenunggu = Peminjaman::where('user_id', $user->id)
+            ->where('status', 'menunggu')
+            ->count();
+
+        $userPeminjamanAktif = Peminjaman::with('alat')
+            ->where('user_id', $user->id)
+            ->where('status', 'disetujui')
             ->latest()
-            ->limit(5)
+            ->get();
+
+        $userSemuaPeminjaman = Peminjaman::with('alat')
+            ->where('user_id', $user->id)
+            ->latest()
             ->get();
 
         return view('dashboard', compact(
-            'totalAlat',
-            'totalStokTersedia',
-            'alatDipinjam',
-            'alatTersedia',
-            'pengajuanBaru',
-            'peminjamanTerbaru'
+            'userAlatDipinjam',
+            'userTotalPeminjaman',
+            'userPengajuanMenunggu',
+            'userPeminjamanAktif',
+            'userSemuaPeminjaman'
         ));
     }
 }

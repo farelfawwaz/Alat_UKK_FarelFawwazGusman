@@ -36,8 +36,8 @@
                     @forelse ($peminjaman as $item)
                         <tr class="hover:bg-indigo-50 transition">
                             <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 font-semibold">{{ $item->user->name }}</td>
-                            <td class="px-6 py-4 text-center">{{ $item->alat->nama }}</td>
+                            <td class="px-6 py-4 font-semibold">{{ $item->nama_peminjam }}</td>
+                            <td class="px-6 py-4 text-center">{{ $item->alat->nama_alat }}</td>
                             <td class="px-6 py-4 text-center">{{ $item->created_at->format('d M Y') }}</td>
                             <td class="px-6 py-4 text-center">
                                 {{-- DETAIL --}}

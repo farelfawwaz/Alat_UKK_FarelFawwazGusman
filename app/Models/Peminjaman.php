@@ -16,7 +16,8 @@ class Peminjaman extends Model
         'no_telp',
         'tanggal_pinjam',
         'tanggal_kembali',
-        'status'
+        'status',
+        'alasan_penolakan'
     ];
 
     protected $casts = [

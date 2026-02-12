@@ -28,8 +28,7 @@
             <div class="mb-6 flex items-center gap-5 p-4 bg-gray-50 rounded-lg border">
                 <div class="w-24 h-20 bg-gray-200 rounded overflow-hidden">
                     @if ($alat->image)
-                        <img src="{{ asset('storage/' . $alat->image) }}"
-                            class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $alat->image) }}" class="w-full h-full object-cover">
                     @else
                         <div class="flex items-center justify-center h-full text-xs text-gray-400">
                             No Image
@@ -44,7 +43,8 @@
                     <p class="text-sm text-gray-500">
                         {{ $alat->kategori->name ?? '-' }}
                     </p>
-                    <span class="inline-block mt-2 px-3 py-1 text-xs font-semibold
+                    <span
+                        class="inline-block mt-2 px-3 py-1 text-xs font-semibold
                         bg-green-100 text-green-700 rounded-full">
                         Stok: {{ $alat->stok }}
                     </span>
@@ -63,8 +63,7 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Nama Peminjam <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="nama_peminjam"
-                        value="{{ old('nama_peminjam', auth()->user()->name) }}"
+                    <input type="text" name="nama_peminjam" value="{{ old('nama_peminjam', auth()->user()->name) }}"
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
                         transition-all duration-200 font-medium"
@@ -102,12 +101,32 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Tanggal Pinjam <span class="text-red-500">*</span>
                     </label>
-                    <input type="date" name="tanggal_pinjam"
-                        value="{{ old('tanggal_pinjam') }}"
+                    <input type="date" name="tanggal_pinjam" value="{{ old('tanggal_pinjam') }}"
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
                         transition-all duration-200 font-medium"
                         required>
+                </div>
+
+                <!-- Jumlah Pinjam -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2">
+                        Jumlah Pinjam <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" name="jumlah" value="{{ old('jumlah') }}" min="1"
+                        max="{{ $alat->stok }}"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium"
+                        required>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Maksimal: {{ $alat->stok }} unit
+                    </p>
+
+                    @error('jumlah')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Divider -->

@@ -11,12 +11,37 @@
 
 <body class="bg-gray-100 min-h-screen flex">
 
+    @php
+        $role = auth()->user()->role ?? null;
+
+        switch ($role) {
+            case 'admin':
+                $sidebarGradient = 'from-blue-600 to-blue-800';
+                break;
+
+            case 'petugas':
+                $sidebarGradient = 'from-green-600 to-green-800';
+                break;
+
+            case 'user':
+                $sidebarGradient = 'from-indigo-600 to-indigo-800';
+                break;
+
+            default:
+                $sidebarGradient = 'from-gray-600 to-gray-800';
+                break;
+        }
+    @endphp
+
+
+
     <!-- Sidebar -->
     <aside x-data="{ loaded: false }" x-init="setTimeout(() => loaded = true, 50)"
         :class="loaded ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'"
-        class="w-64 bg-gradient-to-b from-blue-600 to-indigo-700 text-white flex flex-col
-           fixed h-screen transform transition-all duration-500 ease-out
-           print:hidden">
+        class="w-64 bg-gradient-to-b {{ $sidebarGradient }} text-white
+       flex flex-col fixed h-screen
+       transform transition-all duration-500 ease-out
+       print:hidden">
 
 
         <!-- Brand -->
