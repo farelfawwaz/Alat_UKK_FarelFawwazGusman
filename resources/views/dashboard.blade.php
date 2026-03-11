@@ -30,11 +30,6 @@
                             <p class="text-4xl font-bold text-blue-600 mt-2">{{ $totalAlat ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Seluruh inventaris</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
 
@@ -45,11 +40,6 @@
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Peminjam</p>
                             <p class="text-4xl font-bold text-purple-600 mt-2">{{ $totalPeminjam ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Pengguna terdaftar</p>
-                        </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 001.591-.03 9.348 9.348 0 005.974-3.64m0 0A9.325 9.325 0 0021 12a9.325 9.325 0 00-7.754-9.128m0 0A9.37 9.37 0 0021 12" />
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -62,11 +52,6 @@
                             <p class="text-4xl font-bold text-yellow-500 mt-2">{{ $alatDipinjam ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Sedang digunakan</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .984.75 1.75 1.972 1.75.23 0 .456-.044.681-.128a2.25 2.25 0 00-1.552-2.558A2.247 2.247 0 0012 3.75zM15 6.75a2.25 2.25 0 012.25 2.25v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 21V9a2.25 2.25 0 012.25-2.25M15 6.75h-3" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
 
@@ -77,11 +62,6 @@
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Menunggu Persetujuan</p>
                             <p class="text-4xl font-bold text-red-500 mt-2">{{ $pengajuanBaru ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Perlu ditinjau</p>
-                        </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -185,11 +165,6 @@
                             <p class="text-4xl font-bold text-green-600 mt-2">{{ $totalStokTersedia ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Siap dipinjam</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
 
@@ -201,11 +176,6 @@
                             <p class="text-4xl font-bold text-blue-600 mt-2">{{ $alatDipinjam ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Dalam pengembalian</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 004.5 9.75v10.5A2.25 2.25 0 006.75 22.5h10.5A2.25 2.25 0 0019.5 20.25V9.75a2.25 2.25 0 00-2.25-2.25h-.75m0 0V4.5a2.25 2.25 0 00-2.25-2.25H9.75a2.25 2.25 0 00-2.25 2.25v3h-.75" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
 
@@ -216,11 +186,6 @@
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Pengajuan Baru</p>
                             <p class="text-4xl font-bold text-orange-600 mt-2">{{ $pengajuanBaru ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Perlu diproses</p>
-                        </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .984.75 1.75 1.972 1.75.23 0 .456-.044.681-.128a2.25 2.25 0 00-1.552-2.558A2.247 2.247 0 0012 3.75zM15 6.75a2.25 2.25 0 012.25 2.25v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 21V9a2.25 2.25 0 012.25-2.25M15 6.75h-3" />
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -278,9 +243,6 @@
             <!-- Informasi Penting -->
             <div class="bg-blue-50 border-l-4 border-blue-600 rounded-lg p-6">
                 <div class="flex items-start gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25.75 2.25h21.5L12 21.75 2.25 2.25M12 11.25v9" />
-                    </svg>
                     <div>
                         <h3 class="font-bold text-blue-900">Informasi Penting</h3>
                         <p class="text-blue-800 mt-2">Pastikan selalu memeriksa kondisi alat sebelum diserahkan kepada peminjam dan catat setiap peminjaman dengan detail.</p>
@@ -315,11 +277,7 @@
                             <p class="text-4xl font-bold text-indigo-600 mt-2">{{ $userAlatDipinjam ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Sedang dipinjam</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .984.75 1.75 1.972 1.75.23 0 .456-.044.681-.128a2.25 2.25 0 00-1.552-2.558A2.247 2.247 0 0012 3.75zM15 6.75a2.25 2.25 0 012.25 2.25v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 21V9a2.25 2.25 0 012.25-2.25M15 6.75h-3" />
-                            </svg>
-                        </div>
+
                     </div>
                 </div>
 
@@ -331,11 +289,7 @@
                             <p class="text-4xl font-bold text-cyan-600 mt-2">{{ $userTotalPeminjaman ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Total peminjaman</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3.042.525A9.006 9.006 0 002.25 9m12 0a9 9 0 10-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
+
                     </div>
                 </div>
 
@@ -347,11 +301,7 @@
                             <p class="text-4xl font-bold text-orange-600 mt-2">{{ $userPengajuanMenunggu ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Menunggu persetujuan</p>
                         </div>
-                        <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
+
                     </div>
                 </div>
             </div>

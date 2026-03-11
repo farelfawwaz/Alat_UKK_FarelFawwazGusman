@@ -66,58 +66,32 @@
 
             <!-- Dashboard (SEMUA ROLE) -->
             <a href="{{ route('dashboard') }}" class="{{ $menu }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path fill="currentColor"
-                        d="M22.262 10.468c-3.39-2.854-9.546-8.171-9.607-8.225L12 1.68l-.652.563c-.062.053-6.221 5.368-9.66 8.248A2.04 2.04 0 0 0 1 12a2 2 0 0 0 2 2h1v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6h1a2 2 0 0 0 2-2c0-.598-.275-1.161-.738-1.532" />
-                </svg>
                 <span>Dashboard</span>
             </a>
 
             {{-- ================= ADMIN ================= --}}
             @if (auth()->user()->role === 'admin')
                 <a href="{{ route('admin.users.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <g fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="7" r="4" />
-                            <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
-                        </g>
-                    </svg>
                     <span>Pengguna</span>
                 </a>
 
                 <a href="{{ route('admin.kategori.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                            d="M10 3H4v6h6zm10 0h-6v6h6zM10 13H4v6h6zm8 0a4 4 0 1 0 0 8a4 4 0 0 0 0-8" />
-                    </svg>
                     <span>Kategori</span>
                 </a>
 
                 <a href="{{ route('admin.alat.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path fill="currentColor" d="M15.1 3.12a1 1 0 0 1 .706.71c.452 1.71.032 3.62-1.32 4.97" />
-                    </svg>
                     <span>Alat</span>
                 </a>
 
                 <a href="{{ route('admin.peminjaman.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M11.825 6.455a3 3 0 0 0-3.626.211L5.45 7.796" />
-                    </svg>
                     <span>Peminjaman</span>
                 </a>
 
                 <a href="{{ route('admin.pengembalian.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" stroke="currentColor" stroke-width="2" d="m9 19l-5-5l5-5m9-5v10H5" />
-                    </svg>
                     <span>Pengembalian</span>
                 </a>
 
                 <a href="{{ route('admin.aktivity.index') }}" class="{{ $menu }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
-                        <path fill="currentColor" d="M2.5 13h-2m12 0h-10m-3-3h-2m12 0h-10" />
-                    </svg>
                     <span>Log Aktivitas</span>
                 </a>
             @endif
