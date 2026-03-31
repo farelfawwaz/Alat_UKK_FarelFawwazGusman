@@ -20,7 +20,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('kategori.create') }}"
+            <a href="{{ route('admin.kategori.create') }}"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
 
                 Tambah Kategori
@@ -69,7 +69,7 @@
            opacity-0 group-hover:opacity-100
            transition duration-300">
 
-                                <a href="{{ route('kategori.edit', $item->id) }}"
+                                <a href="{{ route('admin.kategori.edit', $item->id) }}"
                                     class="w-10 h-10 flex items-center justify-center
                bg-white text-blue-500 text-xs font-semibold
                rounded-bl-2xl shadow-lg
@@ -92,7 +92,7 @@
            opacity-0 group-hover:opacity-100
            transition duration-300">
 
-                                <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="form-delete">
+                                <form action="{{ route('admin.kategori.destroy', $item->id) }}" method="POST" class="form-delete">
                                     @csrf
                                     @method('DELETE')
 
@@ -106,7 +106,7 @@
                                             <path fill="currentColor" fill-rule="evenodd"
                                                 d="m18.412 6.5l-.801 13.617A2 2 0 0 1 15.614 22H8.386a2 2 0 0 1-1.997-1.883L5.59 6.5H3.5v-1A.5.5 0 0 1 4 5h16a.5.5 0 0 1 .5.5v1z" />
                                         </svg>
-                                
+
                                     </button>
                                 </form>
                             </td>

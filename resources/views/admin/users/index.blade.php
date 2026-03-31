@@ -23,7 +23,7 @@
                 <p class="text-gray-500 mt-2">Kelola dan pantau data pengguna sistem dengan mudah</p>
             </div>
 
-            <a href="{{ route('users.create') }}"
+            <a href="{{ route('admin.users.create') }}"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
                 <!-- Plus Icon -->
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
                                     <!-- Edit -->
-                                    <a href="{{ route('users.edit', $user->id) }}"
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
                                         class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-500 shadow rounded-lg hover:scale-105 transition">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24">
@@ -109,7 +109,7 @@
                                     </a>
 
                                     <!-- Delete -->
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
                                         @csrf @method('DELETE')
                                         <button onclick="return confirm('Yakin ingin menghapus user ini?')"
                                             class="inline-flex items-center gap-2 px-4 py-2 bg-white text-red-500 shadow rounded-lg hover:scale-105 transition">

@@ -18,7 +18,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('peminjaman.index') }}"
+            <a href="{{ route('admin.peminjaman.index') }}"
                 class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition">
                 ← Kembali
             </a>
@@ -112,12 +112,12 @@
 
             <!-- ACTION BUTTON -->
             <div class="pt-6 border-t flex justify-end gap-4">
-                <a href="{{ route('peminjaman.edit', $peminjaman->id) }}"
+                <a href="{{ route('admin.peminjaman.edit', $peminjaman->id) }}"
                     class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition text-sm">
                     Edit
                 </a>
 
-                <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST">
+                <form action="{{ route('admin.peminjaman.destroy', $peminjaman->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button onclick="return confirm('Yakin ingin menghapus data ini?')"

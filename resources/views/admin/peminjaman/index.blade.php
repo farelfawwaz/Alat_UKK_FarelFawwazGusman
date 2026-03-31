@@ -19,7 +19,7 @@
             <div class="flex flex-col justify-between sm:flex-row items-center gap-3">
 
                 <!-- Form Pencarian -->
-                <form method="GET" action="{{ route('peminjaman.index') }}" class="flex items-center gap-2">
+                <form method="GET" action="{{ route('admin.peminjaman.index') }}" class="flex items-center gap-2">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peminjam..."
                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
 
@@ -29,7 +29,7 @@
                     </button>
 
                     @if (request('search'))
-                        <a href="{{ route('peminjaman.index') }}"
+                        <a href="{{ route('admin.peminjaman.index') }}"
                             class="px-3 py-2 bg-red-50 text-red-600 rounded-lg text-sm hover:bg-red-100 transition">
                             Reset
                         </a>
@@ -37,7 +37,7 @@
                 </form>
 
                 <!-- Tombol Tambah -->
-                <a href="{{ route('peminjaman.create') }}"
+                <a href="{{ route('admin.peminjaman.create') }}"
                     class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg shadow hover:shadow-xl transition transform hover:scale-105">
                     Tambah Peminjaman
                 </a>
@@ -93,7 +93,7 @@
                                 <div class="flex flex-wrap justify-center items-center gap-2">
 
                                     <!-- Detail -->
-                                    <a href="{{ route('peminjaman.show', $pinjam->id) }}"
+                                    <a href="{{ route('admin.peminjaman.show', $pinjam->id) }}"
                                         class="inline-flex items-center gap-2 px-3 py-2 text-sm
             bg-indigo-50 text-indigo-600 rounded-lg
             hover:bg-indigo-100 transition shadow-sm">
@@ -106,7 +106,7 @@
                                     </a>
 
                                     <!-- Edit -->
-                                    <a href="{{ route('peminjaman.edit', $pinjam->id) }}"
+                                    <a href="{{ route('admin.peminjaman.edit', $pinjam->id) }}"
                                         class="inline-flex items-center gap-2 px-3 py-2 text-sm
             bg-blue-50 text-blue-600 rounded-lg
             hover:bg-blue-100 transition shadow-sm">
@@ -121,17 +121,6 @@
                                         </svg>
                                         Edit
                                     </a>
-
-                                    <!-- Hapus -->
-                                    @if ($pinjam->status === 'dipinjam')
-
-                                    @else
-                                        <span class="text-sm text-green-600 font-semibold">
-                                             Sudah Dikembalikan
-                                        </span>
-                                    @endif
-
-
                                 </div>
                             </td>
 

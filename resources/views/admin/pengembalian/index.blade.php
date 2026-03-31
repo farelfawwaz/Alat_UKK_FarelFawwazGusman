@@ -52,7 +52,7 @@
                 </thead>
 
                 <tbody class="divide-y divide-gray-200">
-                    @forelse ($peminjaman as $pinjam)
+                    @forelse ($peminjamans as $pinjam)
                         <tr class="hover:bg-blue-50 transition">
                             <td class="px-6 py-4">
                                 {{ $loop->iteration }}

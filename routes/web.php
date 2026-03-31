@@ -36,9 +36,8 @@ Route::middleware(['auth', 'admin'])
         Route::resource('alat', AlatController::class);
         Route::resource('kategori', KategoriController::class);
 
-        // lihat semua peminjaman
-        Route::get('peminjaman', [PeminjamanController::class, 'index'])
-            ->name('peminjaman.index');
+        // CRUD PEMINJAMAN ADMIN
+        Route::resource('peminjaman', PeminjamanController::class);
 
         // pengembalian
         Route::patch(

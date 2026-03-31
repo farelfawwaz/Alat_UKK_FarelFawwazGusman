@@ -23,7 +23,7 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('peminjaman.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.peminjaman.store') }}" method="POST" class="space-y-6">
                 @csrf
 
                 <!-- Pilih Alat -->

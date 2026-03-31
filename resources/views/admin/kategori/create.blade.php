@@ -15,7 +15,7 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('kategori.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.kategori.store') }}" method="POST" class="space-y-6">
                 @csrf
 
                 <!-- Nama Kategori -->
@@ -46,7 +46,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('kategori.index') }}"
+                    <a href="{{ route('admin.kategori.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>
