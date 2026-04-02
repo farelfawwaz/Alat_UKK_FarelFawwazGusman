@@ -217,6 +217,11 @@ class PeminjamanController extends Controller
         return view('petugas.peminjaman.index', compact('peminjaman'));
     }
 
+    public function showPetugas(Peminjaman $peminjaman)
+    {
+        return view('petugas.peminjaman.show', compact('peminjaman'));
+    }
+
     public function setujui($id)
     {
         DB::transaction(function () use ($id) {

@@ -22,15 +22,6 @@
                 </h1>
                 <p class="text-gray-500 mt-2">Kelola dan pantau data pengguna sistem dengan mudah</p>
             </div>
-
-            <a href="{{ route('admin.users.create') }}"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
-                <!-- Plus Icon -->
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                Tambah Pengguna
-            </a>
         </div>
     </div>
 

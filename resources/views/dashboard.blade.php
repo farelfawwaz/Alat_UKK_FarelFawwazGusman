@@ -150,7 +150,7 @@
                         <p class="text-green-100 mt-2">Kelola peminjaman dan pengembalian alat</p>
                     </div>
                     <div class="flex gap-2">
-                        <span class="bg-green-500 bg-opacity-50 px-4 py-2 rounded-lg text-sm font-medium">Petugas: {{ auth()->user()->name }}</span>
+                        <span class="bg-green-500 bg-opacity-50 px-4 py-2 rounded-lg text-sm font-medium">{{ auth()->user()->name }}</span>
                     </div>
                 </div>
             </div>

@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -73,7 +73,7 @@ class UserController extends Controller
             'role'  => $request->role,
         ]);
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil diperbarui');
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil dihapus');
     }
 }

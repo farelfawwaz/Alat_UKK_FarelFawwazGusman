@@ -63,7 +63,7 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Nama Peminjam <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="nama_peminjam" value="{{ old('nama_peminjam', auth()->user()->name) }}"
+                    <input type="text" name="nama_peminjam" placeholder="Masukkan Nama Anda"
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
                         transition-all duration-200 font-medium"

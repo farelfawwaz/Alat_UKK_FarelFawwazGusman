@@ -15,7 +15,7 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('peminjaman.update', $peminjaman->id) }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.peminjaman.update', $peminjaman->id) }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
 
@@ -87,7 +87,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('peminjaman.index') }}"
+                    <a href="{{ route('admin.peminjaman.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>

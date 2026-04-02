@@ -59,7 +59,7 @@ Route::middleware(['auth', 'petugas'])
     ->group(function () {
 
         // halaman persetujuan
-        Route::get('/peminjaman', [PeminjamanController::class, 'persetujuan'])
+        Route::get('/peminjaman', [PeminjamanController::class, 'indexPetugas'])
             ->name('peminjaman.index');
 
         // tombol setujui
@@ -71,7 +71,7 @@ Route::middleware(['auth', 'petugas'])
             ->name('peminjaman.tolak');
 
         // detail
-        Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])
+        Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'showPetugas'])
             ->name('peminjaman.show');
 
         Route::get('pengembalian', [PeminjamanController::class, 'monitoringPengembalian'])
@@ -94,10 +94,10 @@ Route::middleware(['auth', 'user'])
         Route::get('peminjaman', [PeminjamanController::class, 'userIndex'])
             ->name('peminjaman.index');
 
-        Route::get('peminjaman/create/{alat}', [PeminjamanController::class, 'create'])
+        Route::get('peminjaman/create/{alat}', [PeminjamanController::class, 'createUser'])
             ->name('peminjaman.create');
 
-        Route::post('peminjaman', [PeminjamanController::class, 'store'])
+        Route::post('peminjaman', [PeminjamanController::class, 'storeUser'])
             ->name('peminjaman.store');
 
         Route::get('pengembalian', [PeminjamanController::class, 'userPengembalian'])

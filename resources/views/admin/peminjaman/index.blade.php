@@ -36,12 +36,6 @@
                     @endif
                 </form>
 
-                <!-- Tombol Tambah -->
-                <a href="{{ route('admin.peminjaman.create') }}"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg shadow hover:shadow-xl transition transform hover:scale-105">
-                    Tambah Peminjaman
-                </a>
-
             </div>
         </div>
 

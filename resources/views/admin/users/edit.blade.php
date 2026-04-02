@@ -6,7 +6,7 @@
 
     <!-- Back Link -->
     <div class="mb-6">
-        <a href="{{ route('users.index') }}"
+        <a href="{{ route('admin.users.index') }}"
             class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
             Kembali ke Daftar Pengguna
         </a>
@@ -23,7 +23,7 @@
 
         <!-- Card Body -->
         <div class="bg-white rounded-b-xl shadow-xl p-8 border border-t-0 border-gray-100">
-            <form action="{{ route('users.update', $user->id) }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
 
@@ -120,7 +120,7 @@
 
                 <!-- Action -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('users.index') }}"
+                    <a href="{{ route('admin.users.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>

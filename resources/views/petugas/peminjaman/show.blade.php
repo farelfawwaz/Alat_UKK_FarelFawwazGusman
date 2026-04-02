@@ -119,9 +119,10 @@
                 </div>
 
                 <!-- ACTION BUTTON -->
-                @if ($peminjaman->status == 'menunggu')
-                    <div class="pt-6 border-t flex justify-end gap-4">
+                <div class="pt-6 border-t flex justify-end gap-4">
 
+                    @if ($peminjaman->status == 'menunggu')
+                        <!-- Setujui -->
                         <form action="{{ route('petugas.peminjaman.setujui', $peminjaman->id) }}" method="POST"
                             class="form-setujui">
                             @csrf
@@ -131,6 +132,7 @@
                             </button>
                         </form>
 
+                        <!-- Tolak -->
                         <form action="{{ route('petugas.peminjaman.tolak', $peminjaman->id) }}" method="POST"
                             class="form-tolak">
                             @csrf
@@ -140,10 +142,21 @@
                                 Tolak
                             </button>
                         </form>
+                    @endif
 
+                    @if ($peminjaman->status == 'dipinjam')
+                        <!-- Tombol Kembalikan -->
+                        <form action="{{ route('petugas.peminjaman.kembalikan', $peminjaman->id) }}" method="POST"
+                            onsubmit="return confirm('Alat sudah dikembalikan?')">
+                            @csrf
+                            <button type="submit"
+                                class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition text-sm">
+                                Kembalikan
+                            </button>
+                        </form>
+                    @endif
 
-                    </div>
-                @endif
+                </div>
 
 
             </div>
