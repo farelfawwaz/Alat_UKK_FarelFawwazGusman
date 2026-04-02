@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
+
     public function peminjaman(Request $request)
     {
         $query = Peminjaman::with(['user', 'alat']);
