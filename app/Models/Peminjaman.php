@@ -16,6 +16,7 @@ class Peminjaman extends Model
         'no_telp',
         'tanggal_pinjam',
         'tanggal_kembali',
+        'jumlah',
         'status',
         'alasan_penolakan'
     ];

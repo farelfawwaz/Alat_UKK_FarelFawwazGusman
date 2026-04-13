@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -82,6 +83,15 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $masihMeminjam = $user->peminjamans()
+            ->whereIn('status', ['pending', 'disetujui', 'dipinjam'])
+            ->exists();
+
+        if ($masihMeminjam) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'User tidak bisa dihapus karena masih meminjam barang.');
+        }
+
         $user->delete();
 
         return redirect()->route('admin.users.index')

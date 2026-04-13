@@ -289,7 +289,6 @@
                             <p class="text-4xl font-bold text-cyan-600 mt-2">{{ $userTotalPeminjaman ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Total peminjaman</p>
                         </div>
-
                     </div>
                 </div>
 
@@ -301,7 +300,6 @@
                             <p class="text-4xl font-bold text-orange-600 mt-2">{{ $userPengajuanMenunggu ?? 0 }}</p>
                             <p class="text-xs text-gray-400 mt-3">Menunggu persetujuan</p>
                         </div>
-
                     </div>
                 </div>
             </div>

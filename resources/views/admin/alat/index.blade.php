@@ -114,23 +114,31 @@
                                         </a>
 
                                         <!-- Hapus -->
-                                        <form action="{{ route('admin.alat.destroy', $alat->id) }}" method="POST"
-                                            class="form-delete">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
+                                        @if ($alat->peminjamans()->whereIn('status', ['menunggu', 'dipinjam', 'disetujui'])->exists())
+                                            <button disabled
                                                 class="inline-flex items-center gap-2 px-4 py-2
-        bg-white text-red-500 rounded-lg shadow
-        hover:shadow-lg transition">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill="currentColor" fill-rule="evenodd"
-                                                        d="m18.412 6.5l-.801 13.617A2 2 0 0 1 15.614 22H8.386a2 2 0 0 1-1.997-1.883L5.59 6.5H3.5v-1A.5.5 0 0 1 4 5h16a.5.5 0 0 1 .5.5v1z" />
-                                                </svg>
-                                                Hapus
+        bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed">
+                                                Sedang Dipinjam
                                             </button>
-                                        </form>
+                                        @else
+                                            <form action="{{ route('admin.alat.destroy', $alat->id) }}" method="POST"
+                                                class="form-delete">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                    class="inline-flex items-center gap-2 px-4 py-2
+            bg-white text-red-500 rounded-lg shadow
+            hover:shadow-lg transition">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24">
+                                                        <path fill="currentColor" fill-rule="evenodd"
+                                                            d="m18.412 6.5l-.801 13.617A2 2 0 0 1 15.614 22H8.386a2 2 0 0 1-1.997-1.883L5.59 6.5H3.5v-1A.5.5 0 0 1 4 5h16a.5.5 0 0 1 .5.5v1z" />
+                                                    </svg>
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        @endif
 
                                     </div>
                                 </td>

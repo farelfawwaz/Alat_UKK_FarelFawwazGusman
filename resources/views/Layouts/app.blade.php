@@ -118,7 +118,7 @@
                 </a>
 
                 <a href="{{ route('user.peminjaman.index') }}" class="{{ $menu }}">
-                    <span>Ajukan Peminjaman</span>
+                    <span>Peminjaman Saya</span>
                 </a>
 
                 <a href="{{ route('user.pengembalian.index') }}" class="{{ $menu }}">

@@ -61,17 +61,13 @@
                 <!-- Nama Peminjam -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
-                        Nama Peminjam <span class="text-red-500">*</span>
+                        Nama Peminjam
                     </label>
-                    <input type="text" name="nama_peminjam" placeholder="Masukkan Nama Anda"
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
-                        required>
 
-                    @error('nama_peminjam')
-                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                    @enderror
+                    <input type="text" value="{{ auth()->user()->name }}"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100" readonly>
+
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                 </div>
 
                 <!-- Alamat -->
@@ -101,10 +97,12 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Tanggal Pinjam <span class="text-red-500">*</span>
                     </label>
+
                     <input type="date" name="tanggal_pinjam" value="{{ old('tanggal_pinjam') }}"
+                        min="{{ date('Y-m-d') }}"
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium"
                         required>
                 </div>
 

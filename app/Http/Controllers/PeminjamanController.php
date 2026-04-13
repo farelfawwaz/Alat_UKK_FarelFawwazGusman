@@ -20,11 +20,8 @@ class PeminjamanController extends Controller
             $query->where('nama_peminjam', 'like', '%' . $request->search . '%');
         }
 
-        if ($request->status) {
-            $query->where('status', $request->status);
-        }
-
         $peminjamans = $query->latest()->paginate(10);
+
         return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
@@ -38,22 +35,25 @@ class PeminjamanController extends Controller
     {
         $request->validate([
             'alat_id' => 'required',
-            'nama_peminjam' => 'required',
+            'nama_peminjam' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
-            'tanggal_pinjam' => 'required|date',
+            'tanggal_pinjam' => 'required|date|after_or_equal:today',
         ]);
 
         DB::transaction(function () use ($request) {
+
             $alat = Alat::lockForUpdate()->findOrFail($request->alat_id);
 
             if ($request->jumlah > $alat->stok) {
-                abort(400, 'Stok tidak cukup');
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Stok tidak cukup');
             }
 
             Peminjaman::create([
-                'user_id' => Auth::id(),
+                'user_id' => Auth::id(), // tetap isi admin login
                 'alat_id' => $request->alat_id,
-                'nama_peminjam' => $request->nama_peminjam,
+                'nama_peminjam' => $request->nama_peminjam, // nama manual
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
                 'tanggal_pinjam' => $request->tanggal_pinjam,
@@ -62,8 +62,7 @@ class PeminjamanController extends Controller
                 'status' => 'disetujui',
             ]);
 
-            $alat->stok -= $request->jumlah;
-            $alat->save();
+            $alat->decrement('stok', $request->jumlah);
         });
 
         return redirect()->route('admin.peminjaman.index')
@@ -105,17 +104,18 @@ class PeminjamanController extends Controller
     }
 
     public function destroy(Peminjaman $peminjaman)
-    {
-        if ($peminjaman->status == 'disetujui') {
-            $alat = Alat::findOrFail($peminjaman->alat_id);
-            $alat->stok += $peminjaman->jumlah;
-            $alat->save();
-        }
-
-        $peminjaman->delete();
-
-        return back()->with('success', 'Data berhasil dihapus');
+{
+    if ($peminjaman->status == 'disetujui') {
+        $alat = Alat::findOrFail($peminjaman->alat_id);
+        $alat->stok += $peminjaman->jumlah;
+        $alat->save();
     }
+
+    $peminjaman->delete();
+
+    return redirect()->route('admin.peminjaman.index')
+        ->with('success', 'Data berhasil dihapus');
+}
 
     public function pengembalian(Request $request)
     {
@@ -152,32 +152,38 @@ class PeminjamanController extends Controller
     {
         $request->validate([
             'alat_id'        => 'required|exists:alats,id',
-            'nama_peminjam'  => 'required|string|max:255',
             'tanggal_pinjam' => 'required|date',
+            'jumlah'         => 'required|integer|min:1',
+            'alamat'         => 'nullable|string',
+            'no_telp'        => 'nullable|string|max:20',
         ]);
 
         DB::transaction(function () use ($request) {
+
             $alat = Alat::lockForUpdate()->findOrFail($request->alat_id);
 
-            if ($alat->stok < 1) abort(400, 'Stok alat habis');
+            // CEK STOK SESUAI JUMLAH
+            if ($alat->stok < $request->jumlah) {
+                abort(400, 'Stok alat tidak mencukupi');
+            }
 
             Peminjaman::create([
-                'user_id' => Auth::id(),
-                'alat_id' => $alat->id,
-                'nama_peminjam' => $request->nama_peminjam,
-                'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
-                'tanggal_pinjam' => $request->tanggal_pinjam,
+                'user_id'         => Auth::id(),
+                'alat_id'         => $alat->id,
+                'nama_peminjam'   => Auth::user()->name,
+                'alamat'          => $request->alamat,
+                'no_telp'         => $request->no_telp,
+                'tanggal_pinjam'  => $request->tanggal_pinjam,
                 'tanggal_kembali' => $request->tanggal_kembali,
-                'jumlah' => $request->jumlah,
-                'status' => 'menunggu',
+                'jumlah'          => $request->jumlah,
+                'status'          => 'menunggu',
             ]);
 
             Activitylog::create([
                 'user_id'   => Auth::id(),
                 'aksi'      => 'ajukan',
                 'modul'     => 'peminjaman',
-                'deskripsi' => 'Mengajukan peminjaman alat: ' . $alat->nama,
+                'deskripsi' => 'Mengajukan peminjaman alat: ' . $alat->nama_alat,
             ]);
         });
 

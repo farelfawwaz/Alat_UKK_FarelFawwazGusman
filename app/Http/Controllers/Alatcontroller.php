@@ -39,7 +39,7 @@ class AlatController extends Controller
             $imagePath = $request->file('image')->store('alat', 'public');
         }
 
-       $alat = Alat::create([
+        $alat = Alat::create([
             'nama_alat' => $request->nama_alat,
             'kode_alat' => $request->kode_alat,
             'kategori_id' => $request->kategori_id,
@@ -67,13 +67,13 @@ class AlatController extends Controller
 
     public function update(Request $request, Alat $alat)
     {
- $request->validate([
-        'nama_alat' => 'required',
-        'kategori_id' => 'required',
-        'stok' => 'required|integer',
-        'status' => 'required',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
+        $request->validate([
+            'nama_alat' => 'required',
+            'kategori_id' => 'required',
+            'stok' => 'required|integer',
+            'status' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('alat', 'public');
             $alat->image = $imagePath;
@@ -99,16 +99,19 @@ class AlatController extends Controller
 
     public function destroy(Alat $alat)
     {
-        Activitylog::create([
-            'user_id'   => Auth::id(),
-            'aksi'      => 'hapus',
-            'modul'     => 'alat',
-            'deskripsi' => 'Menghapus alat: ' . $alat->nama_alat,
-        ]);
+        $sedangDipinjam = $alat->peminjamans()
+            ->whereIn('status', ['menunggu', 'dipinjam', 'disetujui'])
+            ->exists();
+
+        if ($sedangDipinjam) {
+            return redirect()->route('admin.alat.index')
+                ->with('error', 'Alat tidak bisa dihapus karena sedang dipinjam.');
+        }
 
         $alat->delete();
 
-        return back()->with('success', 'Alat berhasil dihapus');
+        return redirect()->route('admin.alat.index')
+            ->with('success', 'Alat berhasil dihapus.');
     }
 
     /* ================= USER ================= */

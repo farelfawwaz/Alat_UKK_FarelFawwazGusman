@@ -6,7 +6,7 @@
 
     <!-- Back Link -->
     <div class="mb-6">
-        <a href="{{ route('peminjaman.index') }}"
+        <a href="{{ route('admin.peminjaman.index') }}"
             class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
             Kembali ke Daftar Peminjaman
         </a>
@@ -46,8 +46,7 @@
                             </option>
 
                             @foreach ($alats as $alat)
-                                <option value="{{ $alat->id }}"
-                                    {{ old('alat_id') == $alat->id ? 'selected' : '' }}>
+                                <option value="{{ $alat->id }}" {{ old('alat_id') == $alat->id ? 'selected' : '' }}>
                                     {{ $alat->nama_alat }}
                                 </option>
                             @endforeach
@@ -55,10 +54,8 @@
 
                         <!-- Arrow -->
                         <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </div>
@@ -70,18 +67,18 @@
 
                 <!-- Nama Peminjam -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">
-                        Nama Peminjam <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="nama_peminjam" value="{{ old('nama_peminjam') }}"
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
-                        placeholder="Masukkan nama peminjam" required>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-800 mb-2">
+                            Nama Peminjam
+                        </label>
 
-                    @error('nama_peminjam')
-                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                    @enderror
+                        <input type="text" name="nama_peminjam" value="{{ old('nama_peminjam') }}"
+                            class="w-full border rounded-lg px-4 py-2" required>
+
+                        @error('nama_peminjam')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Alamat -->
@@ -113,11 +110,29 @@
                     <label class="block text-sm font-semibold text-gray-800 mb-2">
                         Tanggal Pinjam <span class="text-red-500">*</span>
                     </label>
+
                     <input type="date" name="tanggal_pinjam" value="{{ old('tanggal_pinjam') }}"
+                        min="{{ date('Y-m-d') }}"
                         class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
-                        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
-                        transition-all duration-200 font-medium"
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium"
                         required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2">
+                        Jumlah Pinjam <span class="text-red-500">*</span>
+                    </label>
+
+                    <input type="number" name="jumlah" value="{{ old('jumlah') }}" min="1"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none
+        transition-all duration-200 font-medium"
+                        required>
+
+                    @error('jumlah')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Divider -->
@@ -125,7 +140,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-end">
-                    <a href="{{ route('peminjaman.index') }}"
+                    <a href="{{ route('admin.peminjaman.index') }}"
                         class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition">
                         Batal
                     </a>
